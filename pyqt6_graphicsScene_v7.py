@@ -212,15 +212,12 @@ class Top_Panel(Panel):
 
     def update_progress(self, progress):
         if progress[-1] == "analysing":
-            print("test1")
             self.prog_label.setText("Analysing inputs")
         elif progress[-1] == "coloring":
-            print("test2")
             self.prog_label.setText("Coloring Plot")
         self.prog_bar.setRange(0, progress[1])
         self.prog_bar.setValue(progress[0])
         if progress[0] == progress[1]:
-            print("test3")
             self.prog_label.setText("")
 
 
@@ -425,10 +422,13 @@ class MainWindow(QtWidgets.QWidget):
         new_label = self.top_panel.label_dropdown.currentText()
         new_metric = self.top_panel.metric_dropdown.currentText()
         graph_items_list = self.graph_panel.scene.items()
-        for graph_item in graph_items_list:
-            if isinstance(graph_item, CustomNode) == True:
-                new_brush = graph_item.neuron.labels_dict[str(new_label)].colors[new_metric]
-                graph_item.setBrush(new_brush)
+        if new_label == "Overall":
+            self.update_metric_colors()
+        else:
+            for graph_item in graph_items_list:
+                if isinstance(graph_item, CustomNode) == True:
+                    new_brush = graph_item.neuron.labels_dict[str(new_label)].colors[new_metric]
+                    graph_item.setBrush(new_brush)
 
     def node_click_func(self):
         if self.right_panel.big == False:
